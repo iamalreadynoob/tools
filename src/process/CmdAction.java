@@ -22,6 +22,7 @@ public class CmdAction
 
         do
         {
+            System.out.print("REQ: ");
             request = new Scanner(System.in).nextLine();
 
             ArrayList<String> pieces = new ArrayList<>();
@@ -42,6 +43,8 @@ public class CmdAction
             }
 
             forward(currentAction, pieces);
+
+            if (currentAction.equals("note")) currentAction = "main";
 
             if (globals.contains(currentAction)) currentAction = flag;
         }
