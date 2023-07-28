@@ -3,6 +3,7 @@ package process;
 import actions.Calendar;
 import actions.Help;
 import actions.Notes;
+import actions.Tracker;
 import fileReading.TextReading;
 
 import java.util.ArrayList;
@@ -44,7 +45,7 @@ public class CmdAction
 
             forward(currentAction, pieces);
 
-            if (currentAction.equals("note")) currentAction = "main";
+            if (currentAction.equals("note") || currentAction.equals("tracker")) currentAction = "main";
 
             if (globals.contains(currentAction)) currentAction = flag;
         }
@@ -60,6 +61,7 @@ public class CmdAction
         }
         else if (action.equals("calendar")) new Calendar(words).run();
         else if (action.equals("note")) new Notes().run();
+        else if (action.equals("tracker")) new Tracker().run();
     }
 
 }
