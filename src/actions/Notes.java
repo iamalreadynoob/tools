@@ -59,8 +59,6 @@ public class Notes implements IAction
 
             int limit = 0;
 
-            System.out.println("flag index: " + flagIndex);
-
             while (flagIndex < reading.getTitles().size() && limit < 10)
             {
                 prompt += "\n[" + (flagIndex + 1) + "] " + reading.getTitles().get(flagIndex);
