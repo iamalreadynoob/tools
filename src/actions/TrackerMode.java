@@ -2,6 +2,7 @@ package actions;
 
 import fileReading.DataReading;
 import fileReading.TinfReading;
+import fileWriting.DataWriting;
 
 import java.util.ArrayList;
 import java.util.Scanner;
@@ -95,7 +96,61 @@ public class TrackerMode implements IAction
 
     private void add(String name)
     {
-        //TODO: behave different due to category
+        name = name.replaceAll(",", "%comma%}");
+        flagIndex = 0;
+
+        DataWriting writing = new DataWriting();
+        String line = null;
+        ArrayList<String> temp = new ArrayList<>();
+
+        if (activeSpace == Tracker.Space.TV)
+        {
+            line = "tv,";
+
+            switch (activeCategory)
+            {
+                case FINISHED:
+                    line += "finished," + name + ",";
+                    String score = askScore();
+
+                    if (score == null)
+                    {
+                        System.out.println("Invalid Score");
+                        break;
+                    }
+                    else line += score + ",";
+
+                    System.out.print("episodes: ");
+                    String finished = new Scanner(System.in).nextLine().replaceAll(",", "");
+                    line += finished + "," + finished;
+                    temp.add(line);
+
+                    writing.append("save/tracker.csv", temp);
+                    flagIndex = 0;
+                    inbox();
+                    break;
+
+                case WATCHLIST:
+                    line += "watchlist," + name + ",-,0se 0ep,";
+
+                    System.out.print("episodes: ");
+                    String willWatch = new Scanner(System.in).nextLine().replaceAll(",", "");
+                    line += willWatch;
+                    temp.add(line);
+
+                    writing.append("save/tracker.csv", temp);
+                    flagIndex = 0;
+                    inbox();
+                    break;
+
+
+            }
+        }
+        else if (activeSpace == Tracker.Space.MOVIE)
+        {
+
+        }
+
     }
 
     private void move()
@@ -202,6 +257,27 @@ public class TrackerMode implements IAction
                 column.add(reqColumn.get(i));
 
         return column;
+    }
+
+    private String askScore()
+    {
+        String score = new Scanner(System.in).nextLine();
+        score = score.trim();
+
+        if (!score.equals("0") &&
+                !score.equals("1") &&
+                !score.equals("2") &&
+                !score.equals("3") &&
+                !score.equals("4") &&
+                !score.equals("5") &&
+                !score.equals("6") &&
+                !score.equals("7") &&
+                !score.equals("8") &&
+                !score.equals("9") &&
+                !score.equals("10"))
+            score = null;
+
+        return score;
     }
 
     private enum Mode {INBOX, DISPLAY}
